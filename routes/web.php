@@ -13,11 +13,13 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+*/
 
 Route::get('admin/dashboard', function () {
     return view('dashboard');
@@ -31,15 +33,18 @@ Route::middleware('auth')->group(function () {
 
     // BLOG ADMIN ROUTES
     Route::get('/admin/blogs', 'App\Http\Controllers\AdminController@index')->name('blogs.index');
-    Route::get('/admin/blogs/create', 'App\Http\Controllers\AdminController@create')->name('blogs.create');
+    Route::get('/admin/blogs/create', 'App\Http\Controllers\AdminController@createShow')->name('blogs.createShow');
     Route::get('/admin/blogs/{id}', 'App\Http\Controllers\AdminController@show')->name('blogs.show');
-    Route::post('/admin/blogs/store', 'App\Http\Controllers\AdminController@store')->name('blogs.store');
-    Route::delete('/admin/blogs/{id}', 'AdminController@destroy');
+    Route::put('/admin/blogs/{id}', 'App\Http\Controllers\AdminController@updateBlog')->name('blogs.update');
 
-
-    
-
+    Route::post('/admin/blogs/store', 'App\Http\Controllers\AdminController@createBlog')->name('blogs.store');
+    Route::delete('/admin/blogs', 'App\Http\Controllers\AdminController@deleteSelected')->name('blogs.destroy');
 });
+
+Route::get('/', 'App\Http\Controllers\BlogController@index')->name('users.blogs.index');
+Route::get('/blogs/{id}', 'App\Http\Controllers\BlogController@show')->name('users.blogs.show');
+
+
 
 require __DIR__.'/auth.php';
 

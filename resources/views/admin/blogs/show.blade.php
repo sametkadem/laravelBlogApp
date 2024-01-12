@@ -10,10 +10,19 @@
                                     
 
                     <!-- Kullanıcı Düzenleme Formu -->
-                    <form action="#" method="POST">
+                    <form action="{{ route('blogs.update', ['id' => $blog->id]) }}" method="POST">
                         @csrf
                         @method('PUT')
-
+                        <div class="mb-4">
+                            <label for="category_id" class="block text-gray-700 font-bold">Kategori</label>
+                            <select id="category_id" name="category_id" class="form-select mt-1 block w-full" required>
+                                @foreach($blog->categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id', $blog->category_id) == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="mb-4">
                             <label for="title" class="block text-gray-700 font-bold">Başlık</label>
                             <input type="text" id="title" name="title" value="{{ old('title', $blog->title) }}" class="form-input mt-1 block w-full" required>

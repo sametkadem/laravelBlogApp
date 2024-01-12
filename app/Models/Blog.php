@@ -2,23 +2,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Blog extends Model
 {
     protected $table = 'blogs'; // Tablo adı
     protected $fillable = ['title', 'content', 'user_id', 'category_id'];
 
-    public function createOrUpdateBlog($data)
-    {
-        return $this->updateOrCreate(
-            ['id' => $data['id']],
-            [
-                'title' => $data['title'],
-                'content' => $data['content'],
-                'user_id' => $data['user_id'],
-                'category_id' => $data['category_id'],
-            ]
-        );
+    
+    public function createBlog($data){
+        return $this->create([
+            'title' => $data['title'],
+            'content' => $data['content'],
+            'user_id' => $data['user_id'],
+            'category_id' => $data['category_id'],
+        ]);
     }
 
     public function getBlogById($id)
@@ -41,8 +39,19 @@ class Blog extends Model
         ]);
     }
 
-    public function deleteBlogById($id)
+    public function deleteBlogsByIds($ids)
     {
-        return $this->destroy($id);
+        return $this->destroy($ids);
+    }
+
+    public function getAllBlogs()
+    {
+        return $this->all();
+    }
+
+    public function getUserNameById($id)
+    {
+        $user = db::table('users')->where('id', $id)->first();
+        return $user->name;        
     }
 }
